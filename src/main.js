@@ -224,7 +224,7 @@ export default class TahoeCodePlugin extends Plugin {
   patchCommand(id, inCode, applies = (cm) => inBlock(cm.state, cm.state.selection.main.head)) {
     const cmd = this.app.commands && this.app.commands.commands && this.app.commands.commands[id];
     if (!cmd) return;
-    const original = { editorCallback: cmd.editorCallback, editorCheckCallback: cmd.editorCheckCallback };
+    const original = { editorCallback: cmd.editorCallback, editorCheckCallback: cmd.editorCheckCallback, checkCallback: cmd.checkCallback };
     const here = (editor) => {
       const cm = editor && editor.cm;
       return cm && applies(cm) ? cm : null;
@@ -243,6 +243,18 @@ export default class TahoeCodePlugin extends Plugin {
         const cm = here(editor);
         if (cm && inCode(cm)) return;
         return original.editorCallback.call(cmd, editor, ctx);
+      };
+    } else if (original.checkCallback) {
+      // Since Obsidian 1.14, follow link (⌥Enter) and open link in a new tab
+      // (⌘↩) are plain check callbacks, for the active editor.
+      cmd.checkCallback = (checking) => {
+        const active = this.app.workspace.activeEditor;
+        const cm = here(active && active.editor);
+        if (cm) {
+          if (checking) return true;
+          if (inCode(cm)) return true;
+        }
+        return original.checkCallback.call(cmd, checking);
       };
     }
     this.register(() => Object.assign(cmd, original));
