@@ -71,12 +71,12 @@ Tahoe is a set of plugins and a theme that work on their own and fit together.
 | **Tahoe Code** | An IDE in your code blocks: suggestions, checking as you type, quick fixes, go to definition, formatting and AI edits. | this one |
 | **Tahoe Glass** | Real refraction for the Tahoe theme's glass, and System Settings–style settings pages. | coming soon |
 | **[Tahoe Organize](https://github.com/krishnanefx/obsidian-tahoe-organize)** | Keep a growing vault tidy: inbox triage, smart folders, colored tags, link suggestions, vault health, literature notes and text from images. | available |
-| **Tahoe Intelligence** | On-device AI for your notes: ask your notes, related notes, distilling permanent notes and more. | coming soon |
+| **[Tahoe Intelligence](https://github.com/krishnanefx/obsidian-tahoe-intelligence)** | On-device AI for your notes: ask your notes, related notes, distilling permanent notes and more. | available |
 
 **Better together**
 
 - **With [Tahoe Run](https://github.com/krishnanefx/obsidian-tahoe-run):** Python and MATLAB suggestions come from the note's running session (a data frame's real columns, a struct's fields), and equation to code runs its quick check straight away.
-- **With Tahoe Intelligence (coming soon):** Apple Intelligence can be the model for ghost text, ⌘I and equation to code, on your Mac, if you don't use Ollama.
+- **With [Tahoe Intelligence](https://github.com/krishnanefx/obsidian-tahoe-intelligence):** Apple Intelligence can be the model for ghost text, ⌘I and equation to code, on your Mac, if you don't use Ollama.
 - **With [Tahoe](https://github.com/krishnanefx/obsidian-tahoe-theme):** suggestion lists, hover docs and problem cards appear as solid, readable cards with the theme's corners.
 <!-- /tahoe-family -->
 
