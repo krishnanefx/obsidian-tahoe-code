@@ -1,0 +1,10 @@
+{
+  "id": "tahoe-code",
+  "name": "Tahoe Code",
+  "version": "1.3.0",
+  "minAppVersion": "1.13.0",
+  "description": "An IDE in your code blocks: smart Enter and indentation, closing brackets, suggestions and templates, coloured brackets and sticky headers; on desktop, checking as you type, quick fixes, language servers, formatting and local AI.",
+  "author": "Krishnan Adaikkappan",
+  "authorUrl": "https://github.com/krishnanefx",
+  "isDesktopOnly": false
+}

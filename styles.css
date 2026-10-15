@@ -1,0 +1,649 @@
+/* Tahoe Code — code block comforts. Colours follow the theme. */
+
+body {
+  --tc-guide: rgb(127 127 127 / 0.2);
+  --tc-active: rgb(127 127 127 / 0.07);
+  --tc-br-0: #b07800;
+  --tc-br-1: #9b3fcf;
+  --tc-br-2: #0a6fd6;
+  --tc-match-bg: rgb(10 132 255 / 0.14);
+  --tc-match-edge: rgb(10 132 255 / 0.45);
+  --tc-ghost: var(--text-faint);
+}
+
+.theme-dark {
+  --tc-guide: rgb(255 255 255 / 0.12);
+  --tc-active: rgb(255 255 255 / 0.05);
+  --tc-br-0: #f5c542;
+  --tc-br-1: #d77bea;
+  --tc-br-2: #5cb5ff;
+  --tc-match-bg: rgb(10 132 255 / 0.22);
+  --tc-match-edge: rgb(100 170 255 / 0.6);
+}
+
+/* Indent guides: drawn as the line's own background, so the cursor and
+   selection are untouched. --tc-w is the indent width, --tc-u one level. */
+.markdown-source-view.mod-cm6 .cm-line.tc-guides {
+  background-image: repeating-linear-gradient(to right, var(--tc-guide) 0 1px, transparent 1px var(--tc-u));
+  background-size: var(--tc-w) 100%;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.tc-active {
+  box-shadow: inset 0 0 0 999px var(--tc-active);
+}
+
+/* Line numbers sit in the block's left padding, then a column for the fold
+   arrows (Obsidian draws them 15px left of the text), then the code — like Xcode. */
+.markdown-source-view.mod-cm6 .cm-content .cm-line.HyperMD-codeblock.tc-ln {
+  position: relative;
+  padding-inline-start: calc(var(--size-4-4, 16px) + 1.6em + 22px);
+}
+
+.markdown-source-view.mod-cm6 .cm-line.tc-ln::before {
+  content: attr(data-tc-ln);
+  position: absolute;
+  inset-inline-start: 0;
+  width: calc(var(--size-4-4, 16px) + 1.6em);
+  text-align: end;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.86em;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Brackets by depth (specific enough to beat the highlighter's own colour). */
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-0,
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-0 * {
+  color: var(--tc-br-0);
+}
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-1,
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-1 * {
+  color: var(--tc-br-1);
+}
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-2,
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-2 * {
+  color: var(--tc-br-2);
+}
+
+.tc-br-match {
+  background-color: var(--tc-match-bg);
+  box-shadow: 0 0 0 1px var(--tc-match-edge);
+  border-radius: 3px;
+}
+
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-bad,
+.markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-bad * {
+  color: var(--text-error);
+  text-decoration: underline wavy var(--text-error);
+}
+
+/* Suggestions: a compact list with the theme's menu look. */
+.cm-tooltip.cm-tooltip-autocomplete.tahoe-code-completions > ul {
+  font-family: var(--font-monospace);
+  font-size: var(--code-size, 0.88em);
+  max-height: 16em;
+  min-width: 16em;
+  max-width: min(34em, 60vw);
+}
+
+/* Docs go beside the list; where there's no room for that, they'd cover it, so they stay hidden. */
+.cm-tooltip.tahoe-code-completions > .cm-completionInfo:is(.cm-completionInfo-left-narrow, .cm-completionInfo-right-narrow) {
+  display: none;
+}
+
+/* Kinds as small colored badges, like Xcode: f function, C class, V variable… */
+.cm-tooltip.tahoe-code-completions .cm-completionIcon {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 0.7em;
+  padding: 0;
+  border-radius: 0.36em;
+  font-family: var(--font-interface);
+  font-size: 0.68em;
+  font-weight: 700;
+  line-height: 1.5em;
+  font-style: normal;
+  text-align: center;
+  vertical-align: 0.18em;
+  color: #ffffff;
+  opacity: 1;
+  background: #8e8e93;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon::after {
+  content: "·";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-function {
+  background: #af52de;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-function::after {
+  content: "f";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-method {
+  background: #af52de;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-method::after {
+  content: "M";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-class {
+  background: #ff9500;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-class::after {
+  content: "C";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-type {
+  background: #ff9500;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-type::after {
+  content: "T";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-interface {
+  background: #ff9500;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-interface::after {
+  content: "I";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-enum {
+  background: #ff9500;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-enum::after {
+  content: "E";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-variable {
+  background: #34c759;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-variable::after {
+  content: "V";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-property {
+  background: #30b0c7;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-property::after {
+  content: "P";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-constant {
+  background: #30b0c7;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-constant::after {
+  content: "K";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-namespace {
+  background: #007aff;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-namespace::after {
+  content: "N";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-keyword {
+  background: #8e8e93;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-keyword::after {
+  content: "k";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-text {
+  background: #8e8e93;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-text::after {
+  content: "a";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-snippet {
+  background: #ff2d55;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-snippet::after {
+  content: "T";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-postfix {
+  background: #ff2d55;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionIcon-postfix::after {
+  content: ".";
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionDetail {
+  font-family: var(--font-interface);
+  font-style: normal;
+  color: var(--text-muted);
+  margin-inline-start: 0.8em;
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionMatchedText {
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--text-accent);
+}
+
+.cm-tooltip.tahoe-code-completions .cm-completionSection {
+  font-family: var(--font-interface);
+  font-size: 0.8em;
+  color: var(--text-faint);
+  border-bottom: none;
+  padding: 4px 8px 2px;
+}
+
+.cm-tooltip.cm-completionInfo {
+  font-family: var(--font-interface);
+  font-size: 0.86em;
+  max-width: 24em;
+  max-height: 11em;
+  overflow: auto;
+  padding: 6px 10px;
+  white-space: pre-wrap;
+  line-height: 1.4;
+  color: var(--text-normal);
+  background: var(--background-primary);
+  border: none;
+  border-radius: var(--tahoe-radius-menu, 10px);
+  box-shadow: 0 0 0 0.5px var(--background-modifier-border), 0 6px 20px rgb(0 0 0 / 0.14);
+}
+
+/* Templates editor in settings. */
+.tahoe-code-template {
+  padding: 6px 0 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.tahoe-code-template .setting-item {
+  border: none;
+  padding: 0 0 6px;
+}
+
+.tahoe-code-template .setting-item-info {
+  display: none;
+}
+
+.tahoe-code-template-body {
+  width: 100%;
+  font-family: var(--font-monospace);
+  font-size: 0.86em;
+  tab-size: 4;
+  resize: vertical;
+}
+
+/* AI ghost text: the suggestion after the cursor. */
+.tahoe-code-ghost {
+  color: var(--tc-ghost);
+  opacity: 0.75;
+  white-space: pre;
+  pointer-events: none;
+}
+
+/* Docs on hover and parameter hints. */
+.cm-tooltip.cm-tooltip-hover.tahoe-code-hover-tooltip,
+.cm-tooltip.tahoe-code-signature-tooltip {
+  max-width: min(36em, 80vw);
+  border-radius: var(--tahoe-radius-menu, 10px);
+}
+
+.tahoe-code-hover,
+.tahoe-code-signature {
+  padding: 6px 10px;
+  font-size: var(--font-ui-small, 13px);
+  line-height: 1.45;
+  max-height: 22em;
+  overflow: auto;
+}
+
+.tahoe-code-hover p {
+  margin: 0.3em 0;
+}
+
+.tahoe-code-hover pre,
+.tahoe-code-signature code {
+  font-family: var(--font-monospace);
+  font-size: 0.92em;
+  white-space: pre-wrap;
+  margin: 0.3em 0;
+  background: none;
+  padding: 0;
+}
+
+.tahoe-code-hover code {
+  font-family: var(--font-monospace);
+  font-size: 0.92em;
+}
+
+.tahoe-code-signature b {
+  color: var(--text-accent);
+}
+
+.tahoe-code-signature > div {
+  margin-top: 4px;
+  color: var(--text-muted);
+}
+
+/* Problems: keep CodeMirror's wavy underline, in the theme's colours. */
+.markdown-source-view.mod-cm6 .cm-content .cm-lintRange-warning {
+  background-image: none;
+  text-decoration: underline wavy var(--color-orange, #e0a100) 1px;
+  text-underline-offset: 3px;
+}
+
+.markdown-source-view.mod-cm6 .cm-content .cm-lintRange-error {
+  background-image: none;
+  text-decoration: underline wavy var(--text-error, #e5484d) 1px;
+  text-underline-offset: 3px;
+}
+
+.cm-tooltip-lint {
+  font-size: var(--font-ui-small, 13px);
+  border-radius: var(--tahoe-radius-menu, 10px);
+}
+
+/* Server status in settings. */
+.tahoe-code-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-inline-end: 6px;
+  vertical-align: 1px;
+  background: var(--text-faint);
+}
+
+.tahoe-code-dot.is-on {
+  background: var(--color-green, #30d158);
+}
+
+.tahoe-code-dot.is-found {
+  background: var(--color-blue, #0a84ff);
+}
+
+/* Hover cards and parameter hints are for reading: clicks go through them to
+   the code underneath. A card with buttons or links keeps the pointer, so its
+   quick fixes can be reached (marked in main.js). */
+.cm-tooltip.cm-tooltip-hover,
+.cm-tooltip.tahoe-code-signature-tooltip {
+  pointer-events: none;
+}
+
+.cm-tooltip.cm-tooltip-hover.tahoe-code-interactive {
+  pointer-events: auto;
+}
+
+/* Quick-fix buttons in a problem's card: Apple's tinted style (accent text on
+   a light accent fill); any further fixes in the quieter gray. */
+.cm-tooltip .cm-diagnosticAction {
+  height: auto;
+  margin: 2px 0 2px 8px;
+  padding: 2px 10px;
+  border: none;
+  border-radius: 999px;
+  box-shadow: none;
+  font: inherit;
+  font-size: 0.92em;
+  font-weight: 600;
+  color: var(--text-accent);
+  background: color-mix(in srgb, var(--interactive-accent) 15%, transparent);
+  cursor: pointer;
+}
+
+.cm-tooltip .cm-diagnosticAction:hover {
+  background: color-mix(in srgb, var(--interactive-accent) 24%, transparent);
+}
+
+.cm-tooltip .cm-diagnosticAction:active {
+  background: color-mix(in srgb, var(--interactive-accent) 32%, transparent);
+}
+
+.cm-tooltip .cm-diagnosticAction + .cm-diagnosticAction {
+  color: var(--text-normal);
+  background: rgb(120 120 128 / 0.14);
+}
+
+.cm-tooltip .cm-diagnosticAction + .cm-diagnosticAction:hover {
+  background: rgb(120 120 128 / 0.22);
+}
+
+/* Uses of the name under the cursor, like Xcode's highlight */
+.markdown-source-view.mod-cm6 .tc-use {
+  border-radius: 3px;
+  background-color: color-mix(in srgb, var(--interactive-accent) 14%, transparent);
+}
+
+.markdown-source-view.mod-cm6 .tc-use-here {
+  background-color: color-mix(in srgb, var(--interactive-accent) 22%, transparent);
+}
+
+/* ⌘ held over a name: it's a link to its definition */
+.markdown-source-view.mod-cm6 .tc-def-link,
+.markdown-source-view.mod-cm6 .tc-def-link * {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+/* Where ⌘-click landed, for a moment */
+.markdown-source-view.mod-cm6 .tc-flash {
+  border-radius: 3px;
+  animation: tc-flash 0.9s ease-out;
+}
+
+@keyframes tc-flash {
+  0% {
+    background-color: color-mix(in srgb, var(--color-yellow, #ffcc00) 70%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Folded code: a small rounded pill, like Xcode's */
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-foldPlaceholder {
+  margin: 0 4px;
+  padding: 0 7px;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-muted);
+  background: rgb(120 120 128 / 0.16);
+  font-family: var(--font-interface);
+  font-size: 0.85em;
+  vertical-align: 0.05em;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-codeblock .cm-foldPlaceholder:hover {
+  background: rgb(120 120 128 / 0.26);
+}
+
+/* Sticky scope headers: the def/class/for lines you're inside, pinned at the top */
+.markdown-source-view.mod-cm6 .tc-sticky {
+  position: absolute;
+  z-index: 4;
+  background: var(--tc-sticky-bg, var(--code-background));
+  box-shadow: 0 0.5px 0 var(--background-modifier-border), 0 6px 12px -8px rgb(0 0 0 / 0.3);
+}
+
+.markdown-source-view.mod-cm6 .tc-sticky .tc-sticky-row.tc-sticky-row {
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.markdown-source-view.mod-cm6 .tc-sticky .tc-sticky-row:hover {
+  box-shadow: inset 0 0 0 999px rgb(120 120 128 / 0.1);
+}
+
+/* ⌘I: describe a change. The prompt looks like Apple's Writing Tools field. */
+.markdown-source-view.mod-cm6 .tc-ai-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 42em;
+  margin: 6px 0 6px var(--size-4-4, 16px);
+  padding: 5px 6px 5px 12px;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  background-image: linear-gradient(var(--background-primary), var(--background-primary)), linear-gradient(115deg, #0a84ff, #bf5af2 45%, #ff375f 75%, #ff9f0a);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.1);
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-small, 13px);
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-icon {
+  background: linear-gradient(115deg, #0a84ff, #bf5af2, #ff375f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 1.15em;
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-prompt input {
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  padding: 3px 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+  color: var(--text-normal);
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-prompt input:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-prompt.is-working .tc-ai-icon {
+  animation: tc-ai-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes tc-ai-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-status {
+  flex: 1;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-error {
+  color: var(--text-error);
+  font-size: 0.9em;
+}
+
+.markdown-source-view.mod-cm6 :is(.tc-ai-prompt, .tc-ai-review) button {
+  height: auto;
+  padding: 3px 11px;
+  border: none;
+  border-radius: 999px;
+  box-shadow: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text-normal);
+  background: rgb(120 120 128 / 0.14);
+  cursor: pointer;
+}
+
+.markdown-source-view.mod-cm6 :is(.tc-ai-prompt, .tc-ai-review) button:hover {
+  background: rgb(120 120 128 / 0.22);
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-review button.tc-ai-keep {
+  color: var(--text-accent);
+  background: color-mix(in srgb, var(--interactive-accent) 15%, transparent);
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-review button.tc-ai-keep:hover {
+  background: color-mix(in srgb, var(--interactive-accent) 24%, transparent);
+}
+
+/* The diff: lines going away in red, new ones in green, like Xcode's */
+.markdown-source-view.mod-cm6 .cm-line.tc-ai-working {
+  opacity: 0.5;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.tc-ai-del {
+  box-shadow: inset 0 0 0 999px color-mix(in srgb, var(--color-red, #ff3b30) 13%, transparent);
+  color: var(--text-muted);
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-added {
+  white-space: pre;
+  font-family: var(--font-monospace);
+  font-size: var(--code-size, 0.88em);
+  line-height: var(--line-height-normal, 1.5);
+  background: color-mix(in srgb, var(--color-green, #34c759) 15%, var(--code-background));
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-review {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px var(--size-4-4, 16px) 8px;
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-small, 13px);
+  color: var(--text-muted);
+  background: var(--code-background);
+}
+
+.markdown-source-view.mod-cm6 .tc-ai-review > span {
+  margin-right: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Equation to code */
+.tahoe-code-eq-modal {
+  width: min(560px, 92vw);
+}
+.tahoe-code-eq-preview {
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: var(--background-secondary);
+  overflow-x: auto;
+  text-align: center;
+}
+.modal .tahoe-code-eq-preview mjx-container[jax] {
+  margin: 0;
+}
+.tahoe-code-eq-status {
+  min-height: 1.4em;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+.tahoe-code-eq-status.is-working {
+  animation: tahoe-code-eq-pulse 1.6s ease-in-out infinite;
+}
+@keyframes tahoe-code-eq-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
