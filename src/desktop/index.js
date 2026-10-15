@@ -95,7 +95,7 @@ function settings(plugin, tools, lsp, ghost, containerEl, toggle, save) {
   toggle("equationToCode", "⌘I on an equation writes it as code", "With the cursor in a $$ … $$ or $ … $ equation, ⌘I (or right-click › Turn equation into code) has the same model write it as a Python, MATLAB, Julia or C++ function, named after your notes, with a quick check that runs straight away.");
   new Setting(containerEl)
     .setName("Model for ⌘I")
-    .setDesc("Automatic prefers an Ollama coding model of 7B or more, then a general Ollama model under 10 GB, then a small coding model, then Apple Intelligence.")
+    .setDesc("Automatic prefers an Ollama coding model of 3–12 GB, then a general Ollama model of 2–10 GB, then a smaller coding model, then Apple Intelligence.")
     .addDropdown(async (d) => {
       d.addOption("auto", "Automatic");
       d.addOption("apple", "Apple Intelligence");

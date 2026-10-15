@@ -77,7 +77,10 @@ body {
 .markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-bad,
 .markdown-source-view.mod-cm6 .cm-content .cm-line .tc-br-bad * {
   color: var(--text-error);
-  text-decoration: underline wavy var(--text-error);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='3'%3E%3Cpath d='m0 2.5 l2 -1.5 l1 0 l2 1.5 l1 0' fill='none' stroke='%23e5484d' stroke-width='1.1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  padding-bottom: 2px;
 }
 
 /* Suggestions: a compact list with the theme's menu look. */
@@ -343,17 +346,21 @@ body {
   color: var(--text-muted);
 }
 
-/* Problems: keep CodeMirror's wavy underline, in the theme's colours. */
-.markdown-source-view.mod-cm6 .cm-content .cm-lintRange-warning {
-  background-image: none;
-  text-decoration: underline wavy var(--color-orange, #e0a100) 1px;
-  text-underline-offset: 3px;
+/* Problems: a wavy underline, red for errors and orange for warnings, drawn
+   as a small image the way CodeMirror does (text-decoration styling is only
+   partly supported by WebKit on iPhone). */
+.markdown-source-view.mod-cm6 .cm-content .cm-lintRange-error {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='3'%3E%3Cpath d='m0 2.5 l2 -1.5 l1 0 l2 1.5 l1 0' fill='none' stroke='%23e5484d' stroke-width='1.1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  padding-bottom: 2px;
 }
 
-.markdown-source-view.mod-cm6 .cm-content .cm-lintRange-error {
-  background-image: none;
-  text-decoration: underline wavy var(--text-error, #e5484d) 1px;
-  text-underline-offset: 3px;
+.markdown-source-view.mod-cm6 .cm-content .cm-lintRange-warning {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='3'%3E%3Cpath d='m0 2.5 l2 -1.5 l1 0 l2 1.5 l1 0' fill='none' stroke='%23e0a100' stroke-width='1.1'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  padding-bottom: 2px;
 }
 
 .cm-tooltip-lint {
@@ -440,7 +447,6 @@ body {
 .markdown-source-view.mod-cm6 .tc-def-link,
 .markdown-source-view.mod-cm6 .tc-def-link * {
   text-decoration: underline;
-  text-underline-offset: 2px;
   cursor: pointer;
 }
 
@@ -631,7 +637,7 @@ body {
   overflow-x: auto;
   text-align: center;
 }
-.modal .tahoe-code-eq-preview mjx-container[jax] {
+.modal .tahoe-code-eq-preview .MathJax[jax] {
   margin: 0;
 }
 .tahoe-code-eq-status {

@@ -104,4 +104,4 @@ npm run build     # writes main.js
 
 Releases are built by GitHub Actions: push a tag that matches the version in `manifest.json`, then publish the draft release it creates.
 
-Other plugins can add suggestions through `app.plugins.plugins["tahoe-code"].api.registerCompletionProvider(…)`; Tahoe Run uses it for its running sessions.
+Other plugins can add suggestions through `app.plugins.plugins["tahoe-code"].api.registerCompletionProvider(provider)`; Tahoe Run uses it for its running sessions.

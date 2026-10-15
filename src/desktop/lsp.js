@@ -184,6 +184,9 @@ class Server {
     this.spec = spec;
     this.root = path.join(manager.tools.dir, `lsp-${spec.id}`);
     fs.mkdirSync(this.root, { recursive: true });
+    // Notebooks have display() (Jupyter's, and Tahoe Run's kernel), so Pyright
+    // knows it too: it reads extra builtins from __builtins__.pyi at the root.
+    if (spec.id === "pyright") fs.writeFileSync(path.join(this.root, "__builtins__.pyi"), "from typing import Any\n\ndef display(*objs: Any, **kwargs: Any) -> None: ...\n");
     // clangd reads compile flags from the folder each file is in.
     if (spec.id === "clangd") {
       for (const [lang, flags] of [["c", "-std=c17"], ["cpp", `-std=c++20\n-I${manager.tools.dir}`], ["objc", "-fobjc-arc"]]) {
