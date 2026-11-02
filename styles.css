@@ -309,6 +309,20 @@ body {
   border-radius: var(--tahoe-radius-menu, 10px);
 }
 
+/* A parameter hint is a plain CodeMirror tooltip, which no theme styles: its
+   default background is near-white even in dark mode, under light text. So it
+   gets the theme's own card colours here. */
+.cm-editor .cm-tooltip.tahoe-code-signature-tooltip {
+  color: var(--text-normal);
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: var(--shadow-s);
+}
+
+.theme-dark .cm-editor .cm-tooltip.tahoe-code-signature-tooltip {
+  background-color: var(--background-secondary);
+}
+
 .tahoe-code-hover,
 .tahoe-code-signature {
   padding: 6px 10px;
@@ -652,4 +666,13 @@ body {
   50% {
     opacity: 0.55;
   }
+}
+
+/* The link to the source at the bottom of the settings tab. */
+.tahoe-source-link {
+  margin-top: 2em;
+  padding-top: 0.75em;
+  border-top: 1px solid var(--background-modifier-border);
+  font-size: var(--font-ui-small);
+  color: var(--text-muted);
 }

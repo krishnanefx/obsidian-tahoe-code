@@ -311,6 +311,12 @@ class TahoeCodeSettingTab extends PluginSettingTab {
 
     new Setting(containerEl).setName("Suggestions").setHeading();
     toggle("completion", "Suggest as you type", "Keywords, built-ins and names from the note's blocks, matched like IntelliJ (gTN finds getTimeNow). Names you pick often come first.");
+    if (!this.app.plugins.getPlugin("tahoe-run")) {
+      const live = new Setting(containerEl)
+        .setName("Suggestions from running code")
+        .setDesc("With Tahoe Run, Python and MATLAB blocks also suggest from the note's running session: a data frame's real columns, a struct's fields. ");
+      live.descEl.createEl("a", { text: "Get it", href: "obsidian://show-plugin?id=tahoe-run" });
+    }
     new Setting(containerEl)
       .setName("Docs beside suggestions")
       .setDesc("Each suggestion already shows its signature. This adds a panel with its documentation.")
@@ -371,5 +377,6 @@ class TahoeCodeSettingTab extends PluginSettingTab {
     render();
 
     if (this.plugin.desktop && this.plugin.desktop.settings) this.plugin.desktop.settings(containerEl, toggle, save);
+    containerEl.createDiv({ cls: "tahoe-source-link" }).createEl("a", { text: "Source, issues and ideas on GitHub", href: "https://github.com/krishnanefx/obsidian-tahoe-code" });
   }
 }

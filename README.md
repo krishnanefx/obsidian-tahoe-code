@@ -80,6 +80,10 @@ Tahoe is a set of plugins and a theme that work on their own and fit together.
 - **With [Tahoe](https://github.com/krishnanefx/obsidian-tahoe-theme):** suggestion lists, hover docs and problem cards appear as solid, readable cards with the theme's corners.
 <!-- /tahoe-family -->
 
+## Feedback
+
+Questions are welcome in [Discussions](https://github.com/krishnanefx/obsidian-tahoe-code/discussions), and bugs and ideas in [Issues](https://github.com/krishnanefx/obsidian-tahoe-code/issues/new/choose). If Tahoe Code is useful to you, a star helps others find it.
+
 ## Disclosures
 
 - **It runs programs on your computer** (desktop only), when they're installed: checkers and compilers to find problems (Python, clang, swiftc, javac, node, ruby, perl, the shell, MATLAB's checker), formatters when you press ⇧⌥F, and language servers while you edit a block in their language. Only run code and tools you trust.
