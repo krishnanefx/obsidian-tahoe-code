@@ -16,6 +16,7 @@ Every feature has a switch in the settings.
 - **Brackets and quotes** close themselves and are typed over; selected text gets wrapped; Python gets `"""` docstrings. Enter after `if x` in MATLAB adds the `end` (and `fi`/`done` in the shell, `end` in Ruby, Lua and Julia).
 - **Indent.** Tab and ⇧Tab indent and outdent by the block's own unit (2, 3 or 4 spaces, or tabs). Backspace in leading space removes a whole level.
 - **⌘/** comments lines with the language's own marker: `#`, `%`, `//`, `--`.
+- **From the command palette**, for phones and tablets or your own hotkeys: *Comment or uncomment lines*, *Move line up*, *Move line down* and *Duplicate line*, each only inside a code block.
 
 | Keys | Does |
 | --- | --- |

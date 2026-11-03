@@ -440,6 +440,11 @@ function withinBlock(cmd, edge) {
   };
 }
 
+// The palette commands for ⌥↑ and ⌥↓, for where there's no such key (phones, tablets).
+function moveLines(view, edge) {
+  return withinBlock(edge === "up" ? moveLineUp : moveLineDown, edge)(view);
+}
+
 function duplicateLine(view) {
   const block = inBlock(view.state, view.state.selection.main.head);
   if (!block) return false;
@@ -510,4 +515,4 @@ function editingExtension(plugin) {
   ];
 }
 
-export { editingExtension, toggleComment, duplicateLine, inBlock, targetIndent, makeIndent, unitWidth, width, codeOf, opensLevel };
+export { editingExtension, toggleComment, duplicateLine, moveLines, inBlock, targetIndent, makeIndent, unitWidth, width, codeOf, opensLevel };

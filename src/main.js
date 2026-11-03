@@ -12,7 +12,7 @@
  */
 
 import { Plugin, PluginSettingTab, Setting, Platform, debounce } from "obsidian";
-import { editingExtension, toggleComment, duplicateLine, inBlock } from "./editing";
+import { editingExtension, toggleComment, duplicateLine, moveLines, inBlock } from "./editing";
 import { visualsExtension } from "./visuals";
 import { completionExtension, templateExpander } from "./complete";
 import { formatBlock } from "./format";
@@ -204,6 +204,28 @@ export default class TahoeCodePlugin extends Plugin {
         return true;
       },
     });
+    this.addCommand({
+      id: "toggle-comment",
+      name: "Comment or uncomment lines (in a code block)",
+      editorCheckCallback: (checking, editor) => {
+        const cm = editor.cm;
+        if (!cm || !inBlock(cm.state, cm.state.selection.main.head)) return false;
+        if (!checking) toggleComment(cm);
+        return true;
+      },
+    });
+    for (const edge of ["up", "down"]) {
+      this.addCommand({
+        id: `move-line-${edge}`,
+        name: `Move line ${edge} (in a code block)`,
+        editorCheckCallback: (checking, editor) => {
+          const cm = editor.cm;
+          if (!cm || !inBlock(cm.state, cm.state.selection.main.head)) return false;
+          if (!checking) moveLines(cm, edge);
+          return true;
+        },
+      });
+    }
     this.addCommand({
       id: "toggle-line-numbers",
       name: "Show or hide line numbers in code blocks",
