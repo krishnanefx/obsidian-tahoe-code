@@ -2,6 +2,8 @@
 
 **An IDE in your code blocks.** Smart Enter and indentation, closing brackets, suggestions as you type, live templates, coloured brackets, sticky headers and go to definition, in every code block of your notes. On desktop it also checks your code as you type, offers quick fixes, talks to language servers, formats, and edits with a local AI model. Text outside code blocks is left alone.
 
+**Install:** in Obsidian, open Settings → Community plugins → Browse, search for “Tahoe Code”, then Install and Enable. ([Directory page](https://community.obsidian.md/plugins/tahoe-code))
+
 ![Suggestions as you type, then a misspelt name fixed from its problem card](images/demo.png)
 
 - Type `tot` and **`total`** is suggested; `xs.for` + Tab becomes a whole `for` loop.

@@ -235,6 +235,18 @@ export default class TahoeCodePlugin extends Plugin {
       },
     });
 
+    // Switches for the Look settings, one command each.
+    for (const [key, name] of [["guides", "indent guides"], ["bracketColors", "coloured bracket pairs"], ["matchBrackets", "matching bracket highlight"], ["currentLine", "current line highlight"]]) {
+      this.addCommand({
+        id: `toggle-${key}`,
+        name: `Show or hide ${name} in code blocks`,
+        callback: async () => {
+          this.settings[key] = !this.settings[key];
+          await this.saveAll();
+        },
+      });
+    }
+
     this.addSettingTab(new TahoeCodeSettingTab(this.app, this));
   }
 
