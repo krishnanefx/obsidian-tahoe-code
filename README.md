@@ -4,6 +4,8 @@
 
 **Install:** in Obsidian, open Settings → Community plugins → Browse, search for “Tahoe Code”, then Install and Enable. ([Directory page](https://community.obsidian.md/plugins/tahoe-code))
 
+![Suggestions appearing as you type in a code block](images/demo.gif)
+
 ![Suggestions as you type, then a misspelt name fixed from its problem card](images/demo.png)
 
 - Type `tot` and **`total`** is suggested; `xs.for` + Tab becomes a whole `for` loop.
