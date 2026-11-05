@@ -18,7 +18,7 @@ import { completionExtension, templateExpander } from "./complete";
 import { formatBlock } from "./format";
 import { navigationExtension, goToDefinition, identAt } from "./navigate";
 import { stickyExtension } from "./sticky";
-import { blockAt, blockCode, blocksOf, blocksOfLang, splitLine } from "./blocks";
+import { blockAt, blockCode, blocksOf, blocksOfLang, splitLine, setIndentWidth } from "./blocks";
 import { LANGS } from "./langs";
 import * as desktop from "./desktop";
 import { loadNode } from "./node";
@@ -75,6 +75,7 @@ const DEFAULT_SETTINGS = {
   smartTab: true,
   comments: true,
   lineOps: true,
+  indentWidth: 0, // spaces per indent level; 0 is each language's own
   // Look
   guides: true,
   bracketColors: true,
@@ -110,6 +111,7 @@ export default class TahoeCodePlugin extends Plugin {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || data);
     delete this.settings.recent;
     this.recent = new Map(Object.entries(data.recent || {}));
+    setIndentWidth(this.settings.indentWidth);
     this.saveRecentSoon = debounce(() => this.saveAll(), 4000, true);
     this.providers = new Map();
     this.templates = templateExpander(this);
@@ -296,6 +298,7 @@ export default class TahoeCodePlugin extends Plugin {
 
   async saveAll() {
     const recent = Object.fromEntries([...this.recent.entries()].sort((a, b) => b[1] - a[1]).slice(0, 600));
+    setIndentWidth(this.settings.indentWidth);
     await this.saveData({ settings: this.settings, recent });
     this.app.workspace.updateOptions();
   }
@@ -331,6 +334,18 @@ class TahoeCodeSettingTab extends PluginSettingTab {
     toggle("autoEnd", "Add end, fi, done", "After a line that opens a block in MATLAB, Ruby, Lua, Julia, the shell or AppleScript, Enter adds its end.");
     toggle("smartTab", "Tab and Shift-Tab indent", "Indent and outdent lines in the language's style (4 spaces in Python, the block's own style otherwise). Backspace removes a whole level.");
     toggle("comments", "⌘/ comments in the language", "Comment lines out with #, //, %, -- … instead of Obsidian's %% %%.");
+    new Setting(containerEl)
+      .setName("Indent width")
+      .setDesc("Spaces per level for new indents in blocks that don't show their own (Tab, Enter, converting indentation). Tab-indented languages keep tabs.")
+      .addDropdown((d) =>
+        d
+          .addOption("0", "Each language's own")
+          .addOption("2", "2 spaces")
+          .addOption("4", "4 spaces")
+          .addOption("8", "8 spaces")
+          .setValue(String(s.indentWidth || 0))
+          .onChange(async (v) => ((s.indentWidth = Number(v)), save()))
+      );
     toggle("lineOps", "Line commands", "⌥↑ ⌥↓ move lines, ⌘D duplicates, ⌃G selects the next match, ⇧F6 renames in the block.");
 
     new Setting(containerEl).setName("Look").setHeading();

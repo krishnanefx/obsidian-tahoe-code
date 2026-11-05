@@ -12,6 +12,12 @@ const QUOTES = /^(?:[ \t]*>[ \t]?)*/;
 
 const cache = new WeakMap(); // doc -> blocks
 
+// Spaces per indent level chosen in the settings (0: each language's own habit).
+let indentOverride = 0;
+function setIndentWidth(n) {
+  indentOverride = [2, 4, 8].includes(Number(n)) ? Number(n) : 0;
+}
+
 function blocksOf(doc) {
   let blocks = cache.get(doc);
   if (blocks) return blocks;
@@ -135,7 +141,7 @@ function indentUnitOf(state, block, fallbackTab) {
   }
   const unit = block.def.unit;
   if (unit === "tab") return "\t";
-  return " ".repeat(unit || 4);
+  return " ".repeat(indentOverride || unit || 4);
 }
 
 // Every block of a language in the note (for words and context).
@@ -143,4 +149,4 @@ function blocksOfLang(state, langId) {
   return blocksOf(state.doc).filter((b) => b.def && b.def.id === langId);
 }
 
-export { blocksOf, blockAt, prefixOf, splitLine, blockCode, indentUnitOf, blocksOfLang };
+export { setIndentWidth, blocksOf, blockAt, prefixOf, splitLine, blockCode, indentUnitOf, blocksOfLang };
