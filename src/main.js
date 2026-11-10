@@ -19,6 +19,7 @@ import { formatBlock } from "./format";
 import { navigationExtension, goToDefinition, identAt } from "./navigate";
 import { stickyExtension } from "./sticky";
 import { blockAt, blockCode, blocksOf, blocksOfLang, splitLine, setIndentWidth } from "./blocks";
+import { selectBlock } from "./blockcmds";
 import { LANGS } from "./langs";
 import * as desktop from "./desktop";
 import { loadNode } from "./node";
@@ -248,6 +249,21 @@ export default class TahoeCodePlugin extends Plugin {
         },
       });
     }
+
+    // Commands on the code block around the cursor: run `fn(cm, block)` there.
+    const blockCommand = (id, name, fn) =>
+      this.addCommand({
+        id,
+        name,
+        editorCheckCallback: (checking, editor) => {
+          const cm = editor.cm;
+          const block = cm && inBlock(cm.state, cm.state.selection.main.head);
+          if (!block) return false;
+          if (!checking) fn(cm, block);
+          return true;
+        },
+      });
+    blockCommand("select-block", "Select the whole code block", selectBlock);
 
     this.addSettingTab(new TahoeCodeSettingTab(this.app, this));
   }
