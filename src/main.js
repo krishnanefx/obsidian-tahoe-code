@@ -11,7 +11,7 @@
  * Nothing changes outside code blocks.
  */
 
-import { Plugin, PluginSettingTab, Setting, Platform, debounce } from "obsidian";
+import { Plugin, PluginSettingTab, Setting, Platform, Notice, debounce } from "obsidian";
 import { editingExtension, toggleComment, duplicateLine, moveLines, inBlock } from "./editing";
 import { visualsExtension } from "./visuals";
 import { completionExtension, templateExpander } from "./complete";
@@ -19,7 +19,7 @@ import { formatBlock } from "./format";
 import { navigationExtension, goToDefinition, identAt } from "./navigate";
 import { stickyExtension } from "./sticky";
 import { blockAt, blockCode, blocksOf, blocksOfLang, splitLine, setIndentWidth } from "./blocks";
-import { selectBlock } from "./blockcmds";
+import { selectBlock, blockText } from "./blockcmds";
 import { LANGS } from "./langs";
 import * as desktop from "./desktop";
 import { loadNode } from "./node";
@@ -264,6 +264,14 @@ export default class TahoeCodePlugin extends Plugin {
         },
       });
     blockCommand("select-block", "Select the whole code block", selectBlock);
+    blockCommand("copy-block", "Copy code block without the fences", async (cm, block) => {
+      try {
+        await navigator.clipboard.writeText(blockText(cm, block));
+        new Notice("Copied the code");
+      } catch (e) {
+        new Notice("Couldn't copy the code");
+      }
+    });
 
     this.addSettingTab(new TahoeCodeSettingTab(this.app, this));
   }
