@@ -19,7 +19,7 @@ import { formatBlock } from "./format";
 import { navigationExtension, goToDefinition, identAt } from "./navigate";
 import { stickyExtension } from "./sticky";
 import { blockAt, blockCode, blocksOf, blocksOfLang, splitLine, setIndentWidth } from "./blocks";
-import { selectBlock, blockText } from "./blockcmds";
+import { selectBlock, blockText, duplicateBlock } from "./blockcmds";
 import { LANGS } from "./langs";
 import * as desktop from "./desktop";
 import { loadNode } from "./node";
@@ -272,6 +272,7 @@ export default class TahoeCodePlugin extends Plugin {
         new Notice("Couldn't copy the code");
       }
     });
+    blockCommand("duplicate-block", "Duplicate code block", duplicateBlock);
 
     this.addSettingTab(new TahoeCodeSettingTab(this.app, this));
   }
