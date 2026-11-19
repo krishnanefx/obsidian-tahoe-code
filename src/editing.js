@@ -515,4 +515,4 @@ function editingExtension(plugin) {
   ];
 }
 
-export { editingExtension, toggleComment, duplicateLine, moveLines, inBlock, targetIndent, makeIndent, unitWidth, width, codeOf, opensLevel };
+export { selectedLines, editingExtension, toggleComment, duplicateLine, moveLines, inBlock, targetIndent, makeIndent, unitWidth, width, codeOf, opensLevel };
