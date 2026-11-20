@@ -19,7 +19,7 @@ import { formatBlock } from "./format";
 import { navigationExtension, goToDefinition, identAt } from "./navigate";
 import { stickyExtension } from "./sticky";
 import { blockAt, blockCode, blocksOf, blocksOfLang, splitLine, setIndentWidth } from "./blocks";
-import { selectBlock, blockText, duplicateBlock, sortSelected } from "./blockcmds";
+import { selectBlock, blockText, duplicateBlock, sortSelected, trimBlock } from "./blockcmds";
 import { LANGS } from "./langs";
 import * as desktop from "./desktop";
 import { loadNode } from "./node";
@@ -275,6 +275,7 @@ export default class TahoeCodePlugin extends Plugin {
     blockCommand("duplicate-block", "Duplicate code block", duplicateBlock);
     blockCommand("sort-lines", "Sort lines A to Z (selection, or the whole block)", (cm, block) => sortSelected(cm, block, false));
     blockCommand("sort-lines-descending", "Sort lines Z to A (selection, or the whole block)", (cm, block) => sortSelected(cm, block, true));
+    blockCommand("trim-trailing-whitespace", "Remove trailing whitespace in the code block", trimBlock);
 
     this.addSettingTab(new TahoeCodeSettingTab(this.app, this));
   }

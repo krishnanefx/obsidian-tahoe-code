@@ -1,5 +1,5 @@
 /*
- * Whole-block commands: select, copy, duplicate, sort. The line logic is plain functions on text
+ * Whole-block commands: select, copy, duplicate, sort, tidy. The line logic is plain functions on text
  * (no editor), so it can be tested; the commands apply it to the code block
  * around the cursor and leave a callout's > or a list's indent alone.
  */
@@ -14,6 +14,8 @@ function sortLines(lines, descending = false) {
   const sorted = lines.slice().sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
   return descending ? sorted.reverse() : sorted;
 }
+
+const trimEnd = (line) => line.replace(/[ \t]+$/, "");
 
 /* ---------- commands ---------- */
 
@@ -63,4 +65,8 @@ function sortSelected(view, block, descending) {
   return rewriteLines(view, block, numbers, (_, i) => sorted[i]);
 }
 
-export { sortLines, selectBlock, blockText, duplicateBlock, sortSelected };
+function trimBlock(view, block) {
+  return rewriteLines(view, block, allLines(block), trimEnd);
+}
+
+export { sortLines, trimEnd, selectBlock, blockText, duplicateBlock, sortSelected, trimBlock };
