@@ -69,4 +69,17 @@ function trimBlock(view, block) {
   return rewriteLines(view, block, allLines(block), trimEnd);
 }
 
-export { sortLines, trimEnd, selectBlock, blockText, duplicateBlock, sortSelected, trimBlock };
+// Every blank line of the block goes (the closing fence follows, so each has a line break to take).
+function removeBlankLines(view, block) {
+  const { doc } = view.state;
+  const changes = [];
+  for (let n = block.firstLine; n <= block.lastLine && n < doc.lines; n++) {
+    const line = doc.line(n);
+    if (!splitLine(block, line.text).body.trim()) changes.push({ from: line.from, to: line.to + 1 });
+  }
+  if (!changes.length) return false;
+  view.dispatch({ changes, userEvent: "delete.tidy" });
+  return true;
+}
+
+export { sortLines, trimEnd, selectBlock, blockText, duplicateBlock, sortSelected, trimBlock, removeBlankLines };
