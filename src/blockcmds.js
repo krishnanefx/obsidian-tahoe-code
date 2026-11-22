@@ -1,10 +1,10 @@
 /*
- * Whole-block commands: select, copy, duplicate, sort, tidy. The line logic is plain functions on text
+ * Whole-block commands: select, copy, duplicate, sort, tidy, convert indentation. The line logic is plain functions on text
  * (no editor), so it can be tested; the commands apply it to the code block
  * around the cursor and leave a callout's > or a list's indent alone.
  */
 
-import { splitLine, blockCode } from "./blocks";
+import { splitLine, blockCode, getIndentWidth } from "./blocks";
 import { selectedLines } from "./editing";
 
 /* ---------- pure line logic ---------- */
@@ -16,6 +16,16 @@ function sortLines(lines, descending = false) {
 }
 
 const trimEnd = (line) => line.replace(/[ \t]+$/, "");
+
+// A line's leading whitespace as tabs or as spaces, `tab` columns to a tab.
+function convertIndent(line, to, tab) {
+  const lead = /^[ \t]*/.exec(line)[0];
+  if (!lead) return line;
+  let cols = 0;
+  for (const ch of lead) cols += ch === "\t" ? tab - (cols % tab) : 1;
+  const next = to === "tabs" ? "\t".repeat(Math.floor(cols / tab)) + " ".repeat(cols % tab) : " ".repeat(cols);
+  return next + line.slice(lead.length);
+}
 
 /* ---------- commands ---------- */
 
@@ -82,4 +92,10 @@ function removeBlankLines(view, block) {
   return true;
 }
 
-export { sortLines, trimEnd, selectBlock, blockText, duplicateBlock, sortSelected, trimBlock, removeBlankLines };
+function convertBlock(view, block, to) {
+  const def = block.def;
+  const tab = getIndentWidth() || (typeof def.unit === "number" ? def.unit : 4);
+  return rewriteLines(view, block, allLines(block), (rest) => convertIndent(rest, to, tab));
+}
+
+export { sortLines, trimEnd, convertIndent, selectBlock, blockText, duplicateBlock, sortSelected, trimBlock, removeBlankLines, convertBlock };

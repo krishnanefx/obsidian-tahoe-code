@@ -17,6 +17,9 @@ let indentOverride = 0;
 function setIndentWidth(n) {
   indentOverride = [2, 4, 8].includes(Number(n)) ? Number(n) : 0;
 }
+function getIndentWidth() {
+  return indentOverride;
+}
 
 function blocksOf(doc) {
   let blocks = cache.get(doc);
@@ -149,4 +152,4 @@ function blocksOfLang(state, langId) {
   return blocksOf(state.doc).filter((b) => b.def && b.def.id === langId);
 }
 
-export { setIndentWidth, blocksOf, blockAt, prefixOf, splitLine, blockCode, indentUnitOf, blocksOfLang };
+export { setIndentWidth, getIndentWidth, blocksOf, blockAt, prefixOf, splitLine, blockCode, indentUnitOf, blocksOfLang };
