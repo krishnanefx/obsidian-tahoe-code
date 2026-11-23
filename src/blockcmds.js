@@ -1,10 +1,12 @@
 /*
- * Whole-block commands: select, copy, duplicate, sort, tidy, convert indentation. The line logic is plain functions on text
+ * Whole-block commands: select, copy, duplicate, sort, tidy, convert
+ * indentation, jump between blocks. The line logic is plain functions on text
  * (no editor), so it can be tested; the commands apply it to the code block
  * around the cursor and leave a callout's > or a list's indent alone.
  */
 
-import { splitLine, blockCode, getIndentWidth } from "./blocks";
+import { EditorView } from "@codemirror/view";
+import { blocksOf, splitLine, blockCode, getIndentWidth } from "./blocks";
 import { selectedLines } from "./editing";
 
 /* ---------- pure line logic ---------- */
@@ -25,6 +27,13 @@ function convertIndent(line, to, tab) {
   for (const ch of lead) cols += ch === "\t" ? tab - (cols % tab) : 1;
   const next = to === "tabs" ? "\t".repeat(Math.floor(cols / tab)) + " ".repeat(cols % tab) : " ".repeat(cols);
   return next + line.slice(lead.length);
+}
+
+// The block to jump to from `line`: the next block's first line, or the previous one's.
+function neighbourBlock(blocks, line, dir) {
+  if (dir > 0) return blocks.find((b) => b.firstLine > line) || null;
+  const before = blocks.filter((b) => b.firstLine < line);
+  return before.length ? before[before.length - 1] : null;
 }
 
 /* ---------- commands ---------- */
@@ -98,4 +107,13 @@ function convertBlock(view, block, to) {
   return rewriteLines(view, block, allLines(block), (rest) => convertIndent(rest, to, tab));
 }
 
-export { sortLines, trimEnd, convertIndent, selectBlock, blockText, duplicateBlock, sortSelected, trimBlock, removeBlankLines, convertBlock };
+// Move the cursor to the first line of the next or previous block.
+function jumpBlock(view, dir) {
+  const line = view.state.doc.lineAt(view.state.selection.main.head).number;
+  const b = neighbourBlock(blocksOf(view.state.doc).filter((x) => x.firstLine <= x.lastLine), line, dir);
+  if (!b) return false;
+  view.dispatch({ selection: { anchor: view.state.doc.line(b.firstLine).from }, effects: EditorView.scrollIntoView(view.state.doc.line(b.firstLine).from, { y: "center" }) });
+  return true;
+}
+
+export { sortLines, trimEnd, convertIndent, neighbourBlock, selectBlock, blockText, duplicateBlock, sortSelected, trimBlock, removeBlankLines, convertBlock, jumpBlock };

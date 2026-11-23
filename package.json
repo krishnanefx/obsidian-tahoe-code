@@ -1,6 +1,6 @@
 {
   "name": "obsidian-tahoe-code",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "An IDE in Obsidian's code blocks.",
   "private": true,
   "license": "MIT",

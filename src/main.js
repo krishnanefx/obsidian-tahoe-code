@@ -19,7 +19,7 @@ import { formatBlock } from "./format";
 import { navigationExtension, goToDefinition, identAt } from "./navigate";
 import { stickyExtension } from "./sticky";
 import { blockAt, blockCode, blocksOf, blocksOfLang, splitLine, setIndentWidth } from "./blocks";
-import { selectBlock, blockText, duplicateBlock, sortSelected, trimBlock, removeBlankLines, convertBlock } from "./blockcmds";
+import { selectBlock, blockText, duplicateBlock, sortSelected, trimBlock, removeBlankLines, convertBlock, jumpBlock } from "./blockcmds";
 import { LANGS } from "./langs";
 import * as desktop from "./desktop";
 import { loadNode } from "./node";
@@ -279,6 +279,18 @@ export default class TahoeCodePlugin extends Plugin {
     blockCommand("remove-blank-lines", "Remove blank lines in the code block", removeBlankLines);
     blockCommand("indent-with-spaces", "Convert the block's indentation to spaces", (cm, block) => convertBlock(cm, block, "spaces"));
     blockCommand("indent-with-tabs", "Convert the block's indentation to tabs", (cm, block) => convertBlock(cm, block, "tabs"));
+    for (const [dir, word] of [[1, "next"], [-1, "previous"]]) {
+      this.addCommand({
+        id: `${word}-code-block`,
+        name: `Go to the ${word} code block`,
+        editorCheckCallback: (checking, editor) => {
+          const cm = editor.cm;
+          if (!cm) return false;
+          if (!checking && !jumpBlock(cm, dir)) new Notice(`No ${word} code block`);
+          return true;
+        },
+      });
+    }
 
     this.addSettingTab(new TahoeCodeSettingTab(this.app, this));
   }
