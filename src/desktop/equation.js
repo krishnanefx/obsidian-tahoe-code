@@ -70,10 +70,12 @@ function mathAround(state, pos) {
   }
   const line = doc.lineAt(pos);
   const col = pos - line.from;
-  const re = /(?<![$\\])\$(?!\$)([^$\n]+?)(?<!\\)\$(?!\$)/g;
+  // $…$ not touching another $, and neither $ escaped. No lookbehind: iOS before 16.4 lacks it.
+  const re = /(^|[^$\\])\$(?!\$)([^$\n]*[^$\n\\])\$(?!\$)/g;
   let m;
   while ((m = re.exec(line.text))) {
-    if (col >= m.index && col <= m.index + m[0].length && m[1].trim()) return { latex: m[1].trim(), from: line.from + m.index, to: line.from + m.index + m[0].length };
+    const start = m.index + m[1].length, end = m.index + m[0].length;
+    if (col >= start && col <= end && m[2].trim()) return { latex: m[2].trim(), from: line.from + start, to: line.from + end };
   }
   return null;
 }

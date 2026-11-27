@@ -469,6 +469,6 @@ class TahoeCodeSettingTab extends PluginSettingTab {
     render();
 
     if (this.plugin.desktop && this.plugin.desktop.settings) this.plugin.desktop.settings(containerEl, toggle, save);
-    containerEl.createDiv({ cls: "tahoe-source-link" }).createEl("a", { text: "Source, issues and ideas on GitHub", href: "https://github.com/krishnanefx/obsidian-tahoe-code" });
+    { const source = containerEl.createDiv({ cls: "tahoe-source-link" }); source.createEl("a", { text: "Source, issues and ideas on GitHub", href: "https://github.com/krishnanefx/obsidian-tahoe-code" }); source.appendText(". If it's useful to you, a star there helps others find it."); }
   }
 }

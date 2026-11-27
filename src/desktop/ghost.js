@@ -210,8 +210,10 @@ class Ghost {
 }
 
 // Chat instead of code: "It looks like you're…", "Certainly! Below…", Markdown.
+// Bold is **words** after a space or at a line's start; x**2, **kwargs and
+// a ** b are code.
 function looksLikeProse(text) {
-  if (/\*\*|^\s*\d+\.\s+\*\*|^\s*(?:certainly|sure|here(?:'s| is)|it (?:looks|seems)|this (?:code|function|is)|the (?:following|code)|below|i (?:have|will|can)|you can|note:)\b/im.test(text)) return true;
+  if (/(?:^|\s)\*\*[A-Za-z][^*\n]*\*\*(?!\w)|^\s*\d+\.\s+\*\*|^\s*(?:certainly|sure|here(?:'s| is)|it (?:looks|seems)|this (?:code|function|is)|the (?:following|code)|below|i (?:have|will|can)|you can|note:)\b/im.test(text)) return true;
   const first = text.split("\n").find((l) => l.trim()) || "";
   const words = first.trim().split(/\s+/);
   return words.length >= 6 && !/[=()[\]{}:;<>+*/%#"'`]/.test(first) && /^[A-Z][a-z]/.test(first.trim());
@@ -227,15 +229,17 @@ function clean(text, before, suffix) {
   // The cursor is already indented: the model's own indent for this line would double it.
   if (!lineSoFar) t = t.replace(/^[ \t]+/, "");
   else if (t.trimStart().startsWith(lineSoFar)) t = t.trimStart().slice(lineSoFar.length);
-  // Don't repeat what's already after the cursor.
-  const next = suffix.split("\n")[0].trim();
-  if (next && t.endsWith(next)) t = t.slice(0, -next.length);
   if (looksLikeProse(t)) return "";
   t = t.split(/\n[ \t]*\n/)[0];
   const opens = /[:{([=]\s*$|\b(?:do|then|else)\s*$/.test(before);
   if (lineSoFar && !opens) t = t.split("\n")[0];
   const lines = t.split("\n");
   if (lines.length > 6) t = lines.slice(0, 6).join("\n");
+  // Don't repeat what's already after the cursor. Checked on what's shown, once
+  // the reply is cut down: "x)\n\n# Example…" before ")" would otherwise keep its ")".
+  t = t.replace(/\s+$/, "");
+  const next = suffix.split("\n")[0].trim();
+  if (next && t.endsWith(next)) t = t.slice(0, -next.length);
   if (!t.trim()) return "";
   return t;
 }
